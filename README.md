@@ -19,3 +19,5 @@ pip install -e .
 - More explanation in readme
 
 - Full docs
+
+- Tests
