@@ -12,3 +12,10 @@ pip install -e .
 - TimerDialog
 
 - GroupWidget
+
+
+## TODO
+
+- More explanation in readme
+
+- Full docs
