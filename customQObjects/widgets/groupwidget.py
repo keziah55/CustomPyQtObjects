@@ -5,7 +5,7 @@ class GroupWidget(QGroupBox):
     
         Parameters
         ----------
-        direction : {"vbox", "hbox", "grid", QLayout}
+        layout : {"vbox", "hbox", "grid", QLayout}
             Type of layout to create. If given a QLayout instance, that will be
             used. Default is "vbox", i.e. QVBoxLayout.
         args 
