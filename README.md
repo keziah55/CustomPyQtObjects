@@ -4,7 +4,7 @@ A repo of convenience classes for PyQt objects.
 
 To install:
 ```
-pip install -e .
+pip install .
 ```
 
 ## Widgets
