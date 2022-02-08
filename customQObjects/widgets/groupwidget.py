@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGroupBox, QLayout, QHBoxLayout, QVBoxLayout, QGridLayout
+from qtpy.QtWidgets import QGroupBox, QLayout, QHBoxLayout, QVBoxLayout, QGridLayout
 
 class GroupWidget(QGroupBox):
     """ `QGroupBox <https://doc.qt.io/qt-5/qgroupbox.html>`_ with a layout automatically set.

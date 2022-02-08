@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QSettings
+from qtpy.QtCore import QSettings
 
 class Settings(QSettings):
     """ QSettings subclass that provides :meth:`value` method that will cast

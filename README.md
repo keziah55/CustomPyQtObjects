@@ -1,6 +1,8 @@
 # CustomPyQtObjects
 
-A repo of convenience classes for PyQt objects.
+A repo of convenience classes for PyQt/PySide objects to make them more pythonic.
+
+The porject uses [QtPy](https://pypi.org/project/QtPy/), so will work with either PyQt5 or PySide2.
 
 To install:
 ```

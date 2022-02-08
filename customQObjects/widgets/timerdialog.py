@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QDialog
-from PyQt5.QtCore import QTimer
+from qtpy.QtWidgets import QDialog
+from qtpy.QtCore import QTimer
 
 class TimerDialog(QDialog):
     """ `QDialog <https://doc.qt.io/qt-5/qdialog.html>`_ that will timeout after a given number of milliseconds. 
