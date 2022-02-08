@@ -7,5 +7,5 @@ setup(name='CustomPyQtObjects',
       description='A repo of convenience classes for PyQt/PySide objects.',
       author='Keziah Milligan',
       packages = find_packages(),
-      install_requires = ["wheel", "QtPy"]
+      install_requires = ["QtPy"]
      )
