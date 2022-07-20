@@ -3,6 +3,17 @@ from qtpy.QtCore import Qt
 from qtpy.QtGui import QFontMetrics
 
 class ElideMixin(object):
+    """ Mixin providing functionality to automatically elide text 
+    
+        Parameters
+        ----------
+        elideMode : {'middle', 'left', 'right', 'None', Qt.TextElideMode}
+            Text elide mode, either as string or `Qt.TextElideMode <https://doc.qt.io/qt-6/qt.html#TextElideMode-enum>`_
+        widthAdjust : int, optional
+            If provided, this value will be added to the widget's width when 
+            calling `QFontMetrics.elidedText <https://doc.qt.io/qt-6/qfontmetrics.html#elidedText>`_
+    """
+    
     elideModes = {'left':Qt.ElideLeft, 'middle':Qt.ElideMiddle, 'right':Qt.ElideRight,
                   'none':Qt.ElideNone}
     
@@ -14,26 +25,33 @@ class ElideMixin(object):
         
     @property
     def fullText(self):
+        """ Un-elided text """
         return self._fullText
         
     @property
     def elideMode(self):
+        """ Current elide mode """
         return self._elideMode
         
     @elideMode.setter
     def elideMode(self, mode):
+        """ Set elide mode and update text """
         self._elideMode = self._validateMode(mode)
         self._resetText()
         
     @property
     def widthAdjust(self):
+        """ Current width adjust """
         return self._widthAdjust
     
     @widthAdjust.setter 
     def widthAdjust(self, value):
+        """ Set width adjust and update text """
         self._widthAdjust = value
+        self._resetText()
         
     def _validateMode(self, mode):
+        """ Return requested Qt.TextElideMode """
         if mode is None:
             mode = 'none'
         if isinstance(mode, str):
@@ -48,19 +66,26 @@ class ElideMixin(object):
         return mode
     
     def setText(self, text):
+        """ Elide `text` and set it """
         self._fullText = text
         metrics = QFontMetrics(self.font())
-        elided = metrics.elidedText(text, self.elideMode, self.width()-self.widthAdjust)
+        elided = metrics.elidedText(text, self.elideMode, self.width()+self.widthAdjust)
         super().setText(elided)
         self.setToolTip(self._fullText)
         
     def _resetText(self):
+        """ Reset text from :attr:`fullText` """
         self.setText(self._fullText)
         
     def resizeEvent(self, event):
+        """ Override resizeEvent to update text """
         self._resetText()
         
 class ElideLabel(ElideMixin, QLabel):
+    """ `QLabel <https://doc.qt.io/qt-5/qlabel.html>`_ that automatically elides its text.
+    
+        See :class:`ElideMixin` for additional args and kwargs.
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if len(args) == 1:
