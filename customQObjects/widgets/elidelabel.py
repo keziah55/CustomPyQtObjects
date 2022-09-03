@@ -19,9 +19,10 @@ class ElideMixin(object):
     
     def __init__(self, *args, elideMode='middle', widthAdjust=0, **kwargs):
         self._fullText = ""
-        self.widthAdjust = widthAdjust
+        self._widthAdjust = widthAdjust
+        self._elideMode = self._validateMode(elideMode)
+        
         super().__init__(*args, **kwargs)
-        self.elideMode = elideMode
         
     @property
     def fullText(self):
