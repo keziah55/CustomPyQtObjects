@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QGroupBox, QLayout, QHBoxLayout, QVBoxLayout, QGridLayout
 
-class GroupWidget(QGroupBox):
+class GroupBox(QGroupBox):
     """ `QGroupBox <https://doc.qt.io/qt-5/qgroupbox.html>`_ with a layout automatically set.
     
         Parameters
@@ -20,14 +20,14 @@ class GroupWidget(QGroupBox):
         if isinstance(layout, str):
             if layout not in layout:
                 valid = "'{}', '{}' or '{}'".format(*layouts.keys())
-                msg = f"GroupWidget direction should be {valid} or a QLayout instance, not '{layout}'"
+                msg = f"GroupBox direction should be {valid} or a QLayout instance, not '{layout}'"
                 raise ValueError(msg)
             layoutObj = layouts[layout]
             self.layout = layoutObj()
         elif isinstance(layout, QLayout):
             self.layout = layout
         else:
-            msg = f"GroupWidget direction should be {valid} or a QLayout instance, not '{layout}'"
+            msg = f"GroupBox direction should be {valid} or a QLayout instance, not '{layout}'"
             raise ValueError(msg)
         self.setLayout(self.layout)
         
