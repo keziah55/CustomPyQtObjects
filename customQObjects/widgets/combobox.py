@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QComboBox
 from qtpy.QtCore import QAbstractListModel, Qt
-from typing import List, NamedTuple, Any
+from typing import List, NamedTuple
 
 class ComboBoxModel(QAbstractListModel):
     """ QAbstractListModel that takes a list of NamedTuples with field names 'name' and 'value'
