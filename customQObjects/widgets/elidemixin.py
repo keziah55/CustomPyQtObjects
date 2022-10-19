@@ -1,3 +1,9 @@
+"""
+:class:`ElideMixin` automatically elides text.
+
+:class:`ElideLabel` is a QLabel that uses the :class:`ElideMixin`
+"""
+
 from qtpy.QtWidgets import QLabel
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QFontMetrics
@@ -81,3 +87,13 @@ class ElideMixin(object):
     def resizeEvent(self, event):
         """ Override resizeEvent to update text """
         self._resetText()
+        
+class ElideLabel(ElideMixin, QLabel):
+    """ `QLabel <https://doc.qt.io/qt-5/qlabel.html>`_ that automatically elides its text.
+    
+        See :class:`ElideMixin` for additional args and kwargs.
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if len(args) == 1:
+            self.setText(args[0])
