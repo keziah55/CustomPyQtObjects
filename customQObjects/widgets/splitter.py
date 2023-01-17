@@ -10,6 +10,11 @@ class Splitter(QSplitter):
         container.setLayout(layout)
         self.addWidget(container)
         
+    def setStretchFactors(self, stretch):
+        """ Set multiple stretch factors """
+        for idx, sf in enumerate(stretch):
+            self.setStretchFactor(idx, sf)
+        
 class VSplitter(Splitter):
     """ :class:`Splitter` with vertical orientation """
     def __init__(self, parent=None):
