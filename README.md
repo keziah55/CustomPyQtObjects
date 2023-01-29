@@ -9,17 +9,4 @@ To install:
 pip install .
 ```
 
-## Widgets
-
-- TimerDialog
-
-- GroupWidget
-
-
-## TODO
-
-- More explanation in readme
-
-- Full docs
-
-- Tests
+API documentation can be found [here](https://mkdocstrings.github.io/handlers/overview/).
