@@ -1,0 +1,8 @@
+site_name: Custom PyQt Objects
+
+nav:
+    - Home: 'index.md'
+
+plugins:
+- search
+- mkdocstrings

@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QComboBox
 from qtpy.QtCore import QAbstractListModel, Qt
-from typing import List, NamedTuple
+from typing import NamedTuple
 
 class ComboBoxModel(QAbstractListModel):
     """ QAbstractListModel that takes a list of NamedTuples with field names 'name' and 'value'
@@ -8,7 +8,7 @@ class ComboBoxModel(QAbstractListModel):
         :meth:`data` will reurn the `name` when asked for the Qt.DisplayRole
         or the 'value' when asked for the Qt.UserRole.
     """
-    def __init__(self, values:List[NamedTuple], *args, **kwargs):
+    def __init__(self, values:list[NamedTuple], *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.values = values 
         
@@ -44,11 +44,13 @@ class ComboBox(QComboBox):
         
         If `values` not provided, :meth:`value` will return the current text.
     """
-    def __init__(self, *args, values:List[NamedTuple]=None, **kwargs):
+    def __init__(self, *args, values:list[NamedTuple]=None, model=None, **kwargs):
         super().__init__(*args, **kwargs)
+        if model is None:
+            model = ComboBoxModel
         if values is not None:
-            model = ComboBoxModel(values)
-            self.setModel(model)
+            mdl = model(values)
+            self.setModel(mdl)
         self._values = values
     
     @property
