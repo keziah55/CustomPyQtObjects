@@ -9,4 +9,4 @@ To install:
 pip install .
 ```
 
-API documentation can be found [here](https://mkdocstrings.github.io/handlers/overview/).
+API documentation can be found [here](https://keziah55.github.io/CustomPyQtObjects/).
