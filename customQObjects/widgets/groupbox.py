@@ -2,17 +2,18 @@ from qtpy.QtWidgets import (QGroupBox, QLayout, QHBoxLayout, QVBoxLayout,
                             QGridLayout, QFormLayout)
 
 class GroupBox(QGroupBox):
-    """ `QGroupBox <https://doc.qt.io/qt-5/qgroupbox.html>`_ with a layout automatically set.
+    """ 
+    [QGroupBox](https://doc.qt.io/qt-6/qgroupbox.html) with a layout automatically set.
     
-        Parameters
-        ----------
-        layout : {"vbox", "hbox", "grid", "form", QLayout}
-            Type of layout to create. If given a QLayout instance, that will be
-            used. Default is "vbox", i.e. QVBoxLayout.
-        args 
-            Args to pass to QGroupBox constructor
-        kwargs 
-            Kwargs to pass to QGroupBox constructor
+    Parameters
+    ----------
+    layout : {"vbox", "hbox", "grid", "form", QLayout}
+        Type of layout to create. If given a [QLayout](https://doc.qt.io/qt-6/qlayout.html) instance, that will be
+        used. Default is "vbox", i.e. [QVBoxLayout](https://doc.qt.io/qt-6/qvboxlayout.html).
+    args 
+        Args to pass to [QGroupBox](https://doc.qt.io/qt-6/qgroupbox.html) constructor
+    kwargs 
+        Kwargs to pass to [QGroupBox](https://doc.qt.io/qt-6/qgroupbox.html) constructor
     """
     def __init__(self, *args, layout="vbox", **kwargs):
         super().__init__(*args, **kwargs)

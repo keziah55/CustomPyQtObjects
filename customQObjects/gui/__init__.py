@@ -1,8 +1,9 @@
 from qtpy.QtGui import QIcon, QBrush, QColor
 
-def getIconFromTheme(name):
+def getIconFromTheme(name: str) -> QIcon:
     """ 
-    If `QIcon.hasThemeIcon(name)` is True, return the `QIcon.fromTheme(name)`. 
+    If [QIcon.hasThemeIcon(name)](https://doc.qt.io/qt-6/qicon.html#hasThemeIcon) is True, 
+    return [QIcon.fromTheme(name)](https://doc.qt.io/qt-6/qicon.html#fromTheme). 
     
     Otherwise, return None.
     """
@@ -11,24 +12,24 @@ def getIconFromTheme(name):
     else:
         return None
     
-def makeBrush(value):
+def makeBrush(arg) -> QBrush:
     """ 
-    Return a [QBrush](https://doc.qt.io/qt-6/qbrush.html) from `value`.
+    Return a [QBrush](https://doc.qt.io/qt-6/qbrush.html) from `arg`.
     
-    `value` can be a [QBrush](https://doc.qt.io/qt-6/qbrush.html), [QColor](https://doc.qt.io/qt-6/qcolor.html) 
+    `arg` can be a [QBrush](https://doc.qt.io/qt-6/qbrush.html), [QColor](https://doc.qt.io/qt-6/qcolor.html) 
     or any valid [QColor](https://doc.qt.io/qt-6/qcolor.html) constructor arg.
     """
-    if isinstance(value, QBrush):
-        return value
-    if isinstance(value, QColor):
-        return QBrush(value)
-    if isinstance(value, str):
+    if isinstance(arg, QBrush):
+        return arg
+    if isinstance(arg, QColor):
+        return QBrush(arg)
+    if isinstance(arg, str):
         try:
-            color = QColor(value)
+            color = QColor(arg)
         except:
-            raise ValueError(f"Could not construct QBrush from '{value}'")
+            raise ValueError(f"Could not construct QBrush from '{arg}'")
         else:
             return QBrush(color)
     return None
     
-__all__ = ["getIconFromTheme"]
+__all__ = ["getIconFromTheme", "makeBrush"]

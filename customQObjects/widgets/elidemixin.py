@@ -9,17 +9,17 @@ from qtpy.QtCore import Qt
 from qtpy.QtGui import QFontMetrics
 
 class ElideMixin(object):
-    """ Mixin providing functionality to automatically elide text 
+    """ 
+    Mixin providing functionality to automatically elide text 
     
-        Parameters
-        ----------
-        elideMode : {'middle', 'left', 'right', 'None', Qt.TextElideMode}
-            Text elide mode, either as string or `Qt.TextElideMode <https://doc.qt.io/qt-6/qt.html#TextElideMode-enum>`_
-        widthAdjust : int, optional
-            If provided, this value will be added to the widget's width when 
-            calling `QFontMetrics.elidedText <https://doc.qt.io/qt-6/qfontmetrics.html#elidedText>`_
+    Parameters
+    ----------
+    elideMode : {'middle', 'left', 'right', 'None', Qt.TextElideMode}
+        Text elide mode, either as string or [Qt.TextElideMode](https://doc.qt.io/qt-6/qt.html#TextElideMode-enum>)
+    widthAdjust : int, optional
+        If provided, this value will be added to the widget's width when 
+        calling [QFontMetrics.elidedText](https://doc.qt.io/qt-6/qfontmetrics.html#elidedText)
     """
-    
     elideModes = {'left':Qt.ElideLeft, 'middle':Qt.ElideMiddle, 'right':Qt.ElideRight,
                   'none':Qt.ElideNone}
     
@@ -89,9 +89,9 @@ class ElideMixin(object):
         self._resetText()
         
 class ElideLabel(ElideMixin, QLabel):
-    """ `QLabel <https://doc.qt.io/qt-5/qlabel.html>`_ that automatically elides its text.
+    """ [QLabel](https://doc.qt.io/qt-5/qlabel.html) that automatically elides its text.
     
-        See :class:`ElideMixin` for additional args and kwargs.
+        See [ElideMixin][customQObjects.widgets.ElideMixin] for additional args and kwargs.
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

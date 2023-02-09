@@ -3,13 +3,14 @@
 """
 QStackedWidget that stores references to its pages in a dict.
 """
-from qtpy.QtWidgets import QStackedWidget
+from qtpy.QtWidgets import QStackedWidget, QWidget
 from uuid import uuid4
 
 class StackedWidget(QStackedWidget):
-    """ QStackedWidget that stores references to its pages in a dict. 
+    """ 
+    [QStackedWidget](https://doc.qt.io/qt-6/qstackedwidget.html) that stores references to its pages in a dict. 
     
-        Also can pass dict of `pages` to initialise the stack.
+    Also can pass dict of `pages` to initialise the stack.
     """
     def __init__(self, *args, pages={}, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,19 +28,20 @@ class StackedWidget(QStackedWidget):
             raise KeyError(f"StackedWidget has no widget '{key}'")
             
     @property
-    def widgetDict(self):
+    def widgetDict(self) -> dict:
         """ Return dictionary of keys and widgets """
         return self._widgetDict
     
     @property
-    def widgets(self):
+    def widgets(self) -> list[QWidget]:
         """ Return list of all widgets """
         return [self.widget(idx) for idx in range(self.count())]
             
     def addWidget(self, widget, key=None) -> int:
-        """ Add `widget` to the stack, associated with key `key`. 
+        """ 
+        Add `widget` to the stack, associated with key `key`. 
         
-            If `key` not provided a uuid will be generated.
+        If `key` not provided a uuid will be generated.
         """
         if key is None:
             key = uuid4()
@@ -49,9 +51,10 @@ class StackedWidget(QStackedWidget):
         return super().addWidget(widget)
     
     def insertWidget(self, index, widget, key=None) -> int:
-        """ Insert `widget` to the stack, associated with key `key`, at position `index`
+        """ 
+        Insert `widget` to the stack, associated with key `key`, at position `index`
         
-            If `key` not provided a uuid will be generated.
+        If `key` not provided a uuid will be generated.
         """
         if key is None:
             key = uuid4()
@@ -61,9 +64,10 @@ class StackedWidget(QStackedWidget):
         return super().insertWidget(index, widget)
     
     def removeWidget(self, widget):
-        """ Remove `widget` from stack. 
+        """ 
+        Remove `widget` from stack. 
         
-            `widget` can be a QWidget instance or a key.
+        `widget` can be a [QWidget](https://doc.qt.io/qt-6/qwidget.html) instance or a key.
         """
         if widget in self._widgetDict:
             widget = self._widgetDict[widget]

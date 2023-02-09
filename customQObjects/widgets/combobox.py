@@ -3,10 +3,14 @@ from qtpy.QtCore import QAbstractListModel, Qt
 from typing import NamedTuple
 
 class ComboBoxModel(QAbstractListModel):
-    """ QAbstractListModel that takes a list of NamedTuples with field names 'name' and 'value'
+    """ 
+    [QAbstractListModel](https://doc.qt.io/qt-6/qabstractlistmodel.html) 
+    that takes a list of [NamedTuples](https://docs.python.org/3/library/typing.html#typing.NamedTuple) 
+    with field names 'name' and 'value'.
     
-        :meth:`data` will reurn the `name` when asked for the Qt.DisplayRole
-        or the 'value' when asked for the Qt.UserRole.
+    [data][customQObjects.widgets.ComboBoxModel.data] will return the `name` when 
+    asked for the [Qt.DisplayRole](https://doc.qt.io/qt-6/qt.html#ItemDataRole-enum)
+    and the `value` when asked for the [Qt.UserRole](https://doc.qt.io/qt-6/qt.html#ItemDataRole-enum).
     """
     def __init__(self, values:list[NamedTuple], *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -19,10 +23,11 @@ class ComboBoxModel(QAbstractListModel):
         return len(self.values)
     
     def data(self, idx, role):
-        """ Return the data at index `idx`. 
+        """ 
+        Return the data at index `idx`. 
         
-            If `role` is `Qt.DisplayRole`, return the NamedTuple's `name`.
-            If `role` is `Qt.UserRole`, return the NamedTuple's `value`.
+        If `role` is [Qt.DisplayRole](https://doc.qt.io/qt-6/qt.html#ItemDataRole-enum), return the NamedTuple's `name`.
+        If `role` is [Qt.UserRole](https://doc.qt.io/qt-6/qt.html#ItemDataRole-enum), return the NamedTuple's `value`.
         """
         if not idx.isValid():
             return None
@@ -36,13 +41,27 @@ class ComboBoxModel(QAbstractListModel):
             return value.value
 
 class ComboBox(QComboBox):
-    """ QComboBox with `items` property and ability to automatically create item model.
+    """ 
+    [QComboBox](https://doc.qt.io/qt-6/qcombobox.html) with 
+    [items][customQObjects.widgets.ComboBox.items] property and ability to 
+    automatically create item model.
     
-        If list of NamedTuples passed as `values`, this will be used to display
-        and return data. The tuple fields should be 'name' and 'value'; 'name' 
-        will be displayed as text and 'value' will be returned by :meth:`value`.
-        
-        If `values` not provided, :meth:`value` will return the current text.
+    Parameters
+    ----------
+    values : list[NamedTuple], optional
+        If provided, this will be used to display and return data. The tuple 
+        fields should be 'name' and 'value'; 'name' is displayed as text and 
+        'value' is returned by [value][customQObjects.widgets.combobox.ComboBox.value].
+        If not provided, [value][customQObjects.widgets.combobox.ComboBox.value] will return the current text.
+    model : QAbstractListModel, optional
+        Model to use. If not provided, a model is created that returns the 
+        'name' and 'value' from the `values` list when asked for the
+        [Qt.DisplayRole](https://doc.qt.io/qt-6/qt.html#ItemDataRole-enum) and
+        [Qt.UserRole](https://doc.qt.io/qt-6/qt.html#ItemDataRole-enum) respectively
+    args :
+        [QComboBox](https://doc.qt.io/qt-6/qcombobox.html) args
+    kwargs :
+        [QComboBox](https://doc.qt.io/qt-6/qcombobox.html) kwargs
     """
     def __init__(self, *args, values:list[NamedTuple]=None, model=None, **kwargs):
         super().__init__(*args, **kwargs)
