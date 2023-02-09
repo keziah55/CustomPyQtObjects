@@ -93,7 +93,7 @@ class TableWidget(QTableWidget):
             [QTableWidgetItems](https://doc.qt.io/qt-6/qtablewidgetitem.html)
         kwargs 
             Any QTableWidgetItem setter can be passed here, e.g. `toolTip='this is the tool tip'`
-            will call `setToolTip('this is the tool tip')` after creating the item.
+            will call `setToolTip('this is the tool tip')` on the item.
             `background` and `foreground` can be passed with a 
             [QBrush](https://doc.qt.io/qt-6/qbrush.html), [QColor](https://doc.qt.io/qt-6/qcolor.html) or
             any valid QColor arg.
