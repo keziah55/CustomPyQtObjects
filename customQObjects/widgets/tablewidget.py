@@ -53,7 +53,7 @@ class TableWidget(QTableWidget):
             msg = f"List of {self.columnCount} values needed, got {value}"
             raise ValueError(msg)
     
-    def addRow(self, row, **kwargs):
+    def addRow(self, row:list, **kwargs):
         """ 
         Add row to table 
         
@@ -70,19 +70,46 @@ class TableWidget(QTableWidget):
             any valid QColor arg.
         """
         kwargs = self._parseRowKwargs(**kwargs)
-        for idx, arg in enumerate(row):
-            if len(arg) == 2:
+        for col, arg in enumerate(row):
+            if isinstance(arg, (tuple,list)):
                 item = QTableWidgetItem(*arg)
             else:
                 item = QTableWidgetItem(arg)
-            for name, values in kwargs:
+            for name, values in kwargs.items():
                 # call setters with corresponding value
-                setattr(item, f"set{name.title()}", values[idx])
-            self.setItem(self.rowCount, idx, item)
+                setattr(item, f"set{name.title()}", values[col])
+            self.setItem(self.rowCount, col, item)
             
-    
-    def updateRow(self, idx, row, **kwargs):
-        pass
+    def updateRow(self, idx:int, row:list, **kwargs):
+        """
+        Update data in row number `idx`
+        
+        Parameters
+        ----------
+        idx : int
+            Index of row to update
+        row : list, tuple
+            Sequence of strings or (icon,string) pairs from which to construct
+            [QTableWidgetItems](https://doc.qt.io/qt-6/qtablewidgetitem.html)
+        kwargs 
+            Any QTableWidgetItem setter can be passed here, e.g. `toolTip='this is the tool tip'`
+            will call `setToolTip('this is the tool tip')` after creating the item.
+            `background` and `foreground` can be passed with a 
+            [QBrush](https://doc.qt.io/qt-6/qbrush.html), [QColor](https://doc.qt.io/qt-6/qcolor.html) or
+            any valid QColor arg.
+        """
+        for col in self.columnCount:
+            item = self.item(idx, col)
+            # update text and icon
+            if  isinstance(row[col], (tuple,list)):
+                icon, text = row[col]
+                item.setIcon(icon)
+            else:
+                text = row[col]
+            item.setText(text)
+            # update any other properties
+            for name, values in kwargs.items():
+                setattr(item, f"set{name.title()}", values[col])
     
     def rowData(self, idx): 
         pass
