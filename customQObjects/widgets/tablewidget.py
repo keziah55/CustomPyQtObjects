@@ -12,20 +12,32 @@ class TableWidget(QTableWidget):
         super().__init__()
         
         if horizontalHeader is not None:
-            self.setHorizontalHeaderLabels(self.header)
+            self.setColumnCount(len(horizontalHeader))
+            self.setHorizontalHeaderLabels(horizontalHeader)
+            
         if verticalHeader is not None:
-            self.setVerticalHeaderLabels(self.header)
+            self.setVerticalHeaderLabels(verticalHeader)
             
         if resizeMode is not None:
             self.setResizeMode(resizeMode)
             
+        self._header = horizontalHeader
+            
     @property
     def columnCount(self):
-        return self.columnCount()
+        return super().columnCount()
     
     @property
     def rowCount(self):
-        return self.rowCount()
+        return super().rowCount()
+    
+    @property
+    def header(self):
+        return self._header
+    
+    def clearTable(self):
+        for idx in reversed(range(self.rowCount)):
+            self.removeRow(idx)
     
     def _parseRowKwargs(self, **kwargs):
         names = ['background', 'checkState', 'data', 'flags', 'font', 'foreground',
@@ -52,6 +64,7 @@ class TableWidget(QTableWidget):
         if len(value) != self.columnCount:
             msg = f"List of {self.columnCount} values needed, got {value}"
             raise ValueError(msg)
+        return value
     
     def addRow(self, row:list, **kwargs):
         """ 
@@ -70,6 +83,8 @@ class TableWidget(QTableWidget):
             any valid QColor arg.
         """
         kwargs = self._parseRowKwargs(**kwargs)
+        rowNum = self.rowCount
+        self.insertRow(rowNum)
         for col, arg in enumerate(row):
             if isinstance(arg, (tuple,list)):
                 item = QTableWidgetItem(*arg)
@@ -77,8 +92,11 @@ class TableWidget(QTableWidget):
                 item = QTableWidgetItem(arg)
             for name, values in kwargs.items():
                 # call setters with corresponding value
-                setattr(item, f"set{name.title()}", values[col])
-            self.setItem(self.rowCount, col, item)
+                name = name[0].upper() + name[1:]
+                func = getattr(item, f"set{name}")
+                func(values[col])
+                
+            self.setItem(rowNum, col, item)
             
     def updateRow(self, idx:int, row:list, **kwargs):
         """
@@ -111,14 +129,33 @@ class TableWidget(QTableWidget):
             for name, values in kwargs.items():
                 setattr(item, f"set{name.title()}", values[col])
     
-    def rowData(self, idx): 
-        pass
+    def rowData(self, idx, returnType='dict'): 
+        row = [self.item(idx, col).text() for col in range(self.colCount)]
+        if returnType == 'dict':
+            if len(self.header) != len(row):
+                msg = "Cannot return row data as dict when horizontal header items are None"
+                raise Exception(msg)
+            row = dict(zip(self.header, row))
+        return row
 
     def columnData(self, name): 
-        pass
+        idx = self.header.index(name)
+        column = [self.item(row, idx) for row in range(self.rowCount)]
+        return column
 
     def rowWhere(self, columnName, value, returnType='dict'): 
-        pass
+        values = []
+        col = self.header.index(columnName)
+        for row in range(self.rowCount):
+            if self.item(row, col).text() == value:
+                values = [self.item(row, idx).text() for idx in range(self.colCount)]
+                break
+        if returnType == 'dict':
+            if len(self.header) != len(values):
+                msg = "Cannot return row data as dict when horizontal header items or values are None"
+                raise ValueError(msg)
+            row = dict(zip(self.header, values))
+        return values
     
     def setResizeMode(self, mode):
         """ 
@@ -143,10 +180,13 @@ class TableWidget(QTableWidget):
             mode = modes.get(mode.lower(), None)
             if mode is None:
                 raise ValueError(error_msg)
-        if mode not in modes.values():
-            raise ValueError(error_msg)
+        if isinstance(mode, list): 
+            for idx, m in enumerate(mode):
+                if isinstance(m, str):
+                    mode[idx] = modes.get(m.lower(), None)
+                if mode[idx] not in modes.values():
+                    raise ValueError(error_msg)
             
-        headerView = self.horizontalHeader()
         mode = self._makeRowArgs(mode)
         for idx, m in enumerate(mode):
-            headerView.setSectionResizeMode(idx, m)
+            self.horizontalHeader().setSectionResizeMode(idx, m)
