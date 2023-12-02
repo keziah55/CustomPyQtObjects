@@ -8,7 +8,7 @@ automatically wrap signals from its child widgets.
 import inspect
 import ast
 from functools import partial
-from qtpy.QtCore import QObject
+from qtpy.QtCore import Signal, QObject
 
 def get_node(tree, signal_name):
     """ Walk ast node `tree` until finding where `signal_name` is assigned """
