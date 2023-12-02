@@ -10,33 +10,55 @@ import ast
 from functools import partial
 from qtpy.QtCore import Signal, QObject
 
-def get_node(tree, signal_name):
-    """ Walk ast node `tree` until finding where `signal_name` is assigned """
+def get_signal(tree, signal_names=None) -> list:
+    """ 
+    Parse abstract syntax tree, looking for Signals. 
+    
+    If `signal_name` is None, return all Signals in tree. Otherwise return 
+    requested signals, if found.
+    
+    The reutrn type of this function is a list of tuples of signal name and list of args.
+    If specific signals were requested but not found, en empty list is returned.
+    """
+    signals = []
     for node in ast.walk(tree):
         if isinstance(node, ast.Assign):
-            for target in node.targets:
-                if target.id == signal_name:
-                    return node
+            try:
+                func_id = node.value.func.id
+            except:
+                continue
+            else:
+                if func_id == "Signal":
+                    args = [arg.id for arg in node.value.args]
+                    for target in node.targets:
+                        signal = (target.id, args)
+                        if signal_names is None or target.id in signal_names:
+                            signals.append(signal)
+    return signals
 
-def get_signal_args(class_name, signal_name):
-    """ Find the args with which `signal_name` is defined on object `class_name` """
-    signal_args = []
+def get_signal_signature(widget_class, signal_names=None) -> list|None:
+    """ 
+    Find the signatures for `signal_names` in `widget_class`.
+    
+    If no `signal_names` given, return all Signals defined on the widget.
+    
+    If specific signals are requested but not found, return None.
+    """
     # get source lines of class
-    lines, _ = inspect.getsourcelines(class_name) 
+    lines, _ = inspect.getsourcelines(widget_class) 
     # parse source
     tree = ast.parse("".join(lines)) 
-    # find signal definition
-    node = get_node(tree, signal_name) 
-    # find args of signal
-    if (node := get_node(tree, signal_name)) is not None:
-        signal_args = node.value.args
-        signal_args = [arg.id for arg in node.value.args]
-    return signal_args
-           
-def override_addWidget(widget_type, wrap_signals, bases): 
+    # find signals
+    signals = get_signal(tree, signal_names)
+    if len(signals) == 0:
+        return None
+    else:
+        return signals
+    
+def override_addWidget(widget_class, wrap_signals, bases): 
     def addWidget(self, key, *args, **kwargs):
         """ Create widget with `args` and `kwargs` and assign it to key `key`. """
-        widget = widget_type(*args, **kwargs)
+        widget = widget_class(*args, **kwargs)
         for signal in wrap_signals:
             widget_signal = getattr(widget, signal)
             self_signal = getattr(self, signal)
@@ -55,22 +77,28 @@ class WrapSignalsMeta(type(QObject), type):
     from the widgets contained within.
     
     All the contained widgets should be of the same type; pass this type to 
-    `widget_type` and a list of strings of signal names `wrap_signals`.
-    The signature of the signals is found from the `widget_type`. 
+    `widget_class` and a list of strings of signal names `wrap_signals`.
+    The signature of the signals is found from the `widget_class`. 
+    
+    If a `widget_class` is provided but `wrap_signals` is None, all Signals 
+    defined on `widget_class` will be wrapped.
     
     The container widget must have a `addWidget` method that takes a widget and
     a string identifier. This method is overridden to create the widgets 
-    (using the given `widget_type`) and connect the wrapped signals. The signature
+    (using the given `widget_class`) and connect the wrapped signals. The signature
     of the overriden `addWidget` method is `key, *args, **kwargs`.
     """
-    def __new__(cls, clsname, bases, attrs, widget_type=None, wrap_signals=None):
-        if widget_type is not None and wrap_signals is not None:
-            for signal_name in wrap_signals:
-                signal_args = get_signal_args(widget_type, signal_name)
-                signal_args.insert(0, "str")
-                signal_args = ",".join(signal_args)
-                signal_def = f"Signal({signal_args})"
-                attrs[signal_name] = eval(signal_def)
+    def __new__(cls, clsname, bases, attrs, widget_class=None, wrap_signals=None):
+        if widget_class is not None:
+            signals = get_signal_signature(widget_class, wrap_signals)
+            if signals is not None:
+                for signal_name, signal_args in signals:
+                    signal_args.insert(0, "str")
+                    signal_args = ",".join(signal_args)
+                    signal_def = f"Signal({signal_args})"
+                    attrs[signal_name] = eval(signal_def)
+            if wrap_signals is None:
+                wrap_signals = [signal[0] for signal in signals]
             
-        attrs["addWidget"] = override_addWidget(widget_type, wrap_signals, bases)
+        attrs["addWidget"] = override_addWidget(widget_class, wrap_signals, bases)
         return type(clsname, bases, attrs)
