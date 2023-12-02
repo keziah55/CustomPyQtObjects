@@ -12,13 +12,10 @@
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
         <link href="../assets/_mkdocstrings.css" rel="stylesheet">
-
-        <script src="../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../js/bootstrap.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
     </head>
 
     <body>
@@ -87,12 +84,17 @@
               </ul>
             </li>
             
-            <li class="nav-item" data-level="2"><a href="#customQObjects.core" class="nav-link">customQObjects.core</a>
+            <li class="nav-item" data-level="2"><a href="#customQObjects.core" class="nav-link">core</a>
               <ul class="nav flex-column">
               </ul>
             </li>
             
             <li class="nav-item" data-level="2"><a href="#customQObjects.core.Settings" class="nav-link">Settings</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#customQObjects.core.WrapSignalsMeta" class="nav-link">WrapSignalsMeta</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -105,6 +107,7 @@
 
 
 <div class="doc doc-object doc-module">
+
 
 
 <a id="customQObjects.core"></a>
@@ -125,27 +128,27 @@
 
 
 
+
 <h2 id="customQObjects.core.Settings" class="doc doc-heading">
-        <code>Settings</code>
+          <code>Settings</code>
 
 
 </h2>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><span title="qtpy.QtCore.QSettings">QSettings</span></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="qtpy.QtCore.QSettings">QSettings</span></code></p>
 
   
       <p><a href="https://doc.qt.io/qt-6/qsettings.html">QSettings</a> subclass that provides 
-<a class="autorefs autorefs-internal" href="#customQObjects.core.settings.Settings.value">value</a> method that will cast
+<a class="autorefs autorefs-internal" href="#customQObjects.core.Settings.value">value</a> method that will cast
 "true" and "false" to True or False, or will cast the returned value to
 the given type.</p>
 
-
-        <details class="quote">
-          <summary>Source code in <code>customQObjects/core/settings.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 3</span>
+            <details class="quote">
+              <summary>Source code in <code>customQObjects/core/settings.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 3</span>
 <span class="normal"> 4</span>
 <span class="normal"> 5</span>
 <span class="normal"> 6</span>
@@ -203,7 +206,7 @@ the given type.</p>
             <span class="n">v</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -217,12 +220,14 @@ the given type.</p>
 
 
 
+
 <div class="doc doc-object doc-function">
 
 
 
-<h3 id="customQObjects.core.settings.Settings.value" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<h3 id="customQObjects.core.Settings.value" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 </h3>
 
@@ -230,6 +235,8 @@ the given type.</p>
   <div class="doc doc-contents ">
   
       <p>Get value from settings. If value is "true" or "false", return True or False.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -247,7 +254,11 @@ the given type.</p>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Setting to be returned</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Setting to be returned</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -255,10 +266,14 @@ the given type.</p>
         <tr>
           <td><code>defaultValue</code></td>
           <td>
-                <code>object, optional</code>
+                <code>object</code>
           </td>
-          <td><p>If <code>key</code> is not in the settings, return <code>defaultValue</code>. Default
-is None</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>If <code>key</code> is not in the settings, return <code>defaultValue</code>. Default
+is None</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -266,9 +281,13 @@ is None</p></td>
         <tr>
           <td><code>cast</code></td>
           <td>
-                <code>type, optional</code>
+                <code>type</code>
           </td>
-          <td><p>If provided, cast the value to the given type</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>If provided, cast the value to the given type</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -276,9 +295,9 @@ is None</p></td>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>customQObjects/core/settings.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
+          <details class="quote">
+            <summary>Source code in <code>customQObjects/core/settings.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
@@ -322,10 +341,130 @@ is None</p></td>
         <span class="n">v</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">v</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="customQObjects.core.WrapSignalsMeta" class="doc doc-heading">
+          <code>WrapSignalsMeta</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code>type(<span title="qtpy.QtCore.QObject">QObject</span>)</code>, <code>type</code></p>
+
+  
+      <p>Metaclass for any container widget (e.g. StackedWidget).</p>
+<p>Using <code>WrapSignalsMeta</code> as the metaclass automatically wraps given signals 
+from the widgets contained within.</p>
+<p>All the contained widgets should be of the same type; pass this type to 
+<code>widget_class</code> and a list of strings of signal names <code>wrap_signals</code>.
+The signature of the signals is found from the <code>widget_class</code>. </p>
+<p>If a <code>widget_class</code> is provided but <code>wrap_signals</code> is None, all Signals 
+defined on <code>widget_class</code> will be wrapped.</p>
+<p>The container widget must have a <code>addWidget</code> method that takes a widget and
+a string identifier. This method is overridden to create the widgets 
+(using the given <code>widget_class</code>) and connect the wrapped signals. The signature
+of the overriden <code>addWidget</code> method is <code>key, *args, **kwargs</code>.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>customQObjects/core/wrapsignalsmeta.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">WrapSignalsMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">QObject</span><span class="p">),</span> <span class="nb">type</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Metaclass for any container widget (e.g. StackedWidget).</span>
+
+<span class="sd">    Using `WrapSignalsMeta` as the metaclass automatically wraps given signals </span>
+<span class="sd">    from the widgets contained within.</span>
+
+<span class="sd">    All the contained widgets should be of the same type; pass this type to </span>
+<span class="sd">    `widget_class` and a list of strings of signal names `wrap_signals`.</span>
+<span class="sd">    The signature of the signals is found from the `widget_class`. </span>
+
+<span class="sd">    If a `widget_class` is provided but `wrap_signals` is None, all Signals </span>
+<span class="sd">    defined on `widget_class` will be wrapped.</span>
+
+<span class="sd">    The container widget must have a `addWidget` method that takes a widget and</span>
+<span class="sd">    a string identifier. This method is overridden to create the widgets </span>
+<span class="sd">    (using the given `widget_class`) and connect the wrapped signals. The signature</span>
+<span class="sd">    of the overriden `addWidget` method is `key, *args, **kwargs`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">clsname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">widget_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wrap_signals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">widget_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">signals</span> <span class="o">=</span> <span class="n">get_signal_signature</span><span class="p">(</span><span class="n">widget_class</span><span class="p">,</span> <span class="n">wrap_signals</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">signals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">signal_name</span><span class="p">,</span> <span class="n">signal_args</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">:</span>
+                    <span class="n">signal_args</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;str&quot;</span><span class="p">)</span>
+                    <span class="n">signal_args</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">signal_args</span><span class="p">)</span>
+                    <span class="n">signal_def</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Signal(</span><span class="si">{</span><span class="n">signal_args</span><span class="si">}</span><span class="s2">)&quot;</span>
+                    <span class="n">attrs</span><span class="p">[</span><span class="n">signal_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">signal_def</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">wrap_signals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">wrap_signals</span> <span class="o">=</span> <span class="p">[</span><span class="n">signal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">]</span>
+
+        <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;addWidget&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">override_addWidget</span><span class="p">(</span><span class="n">widget_class</span><span class="p">,</span> <span class="n">wrap_signals</span><span class="p">,</span> <span class="n">bases</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">clsname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
 
 
 
@@ -350,12 +489,14 @@ is None</p></td>
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
         <script>
             var base_url = "..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="../js/base.js" defer></script>
-        <script src="../search/main.js" defer></script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
