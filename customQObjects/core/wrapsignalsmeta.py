@@ -66,8 +66,17 @@ def override_addWidget(widget_class, wrap_signals, bases):
             widget_signal.connect(func)
         for base in bases:
             if (method:=getattr(base, "addWidget", None)) is not None:
+                print(self, method, base, key)
                 return method(self, widget, key=key)
     return addWidget
+
+def override_getattr(wrap_signals, bases):
+    def __getattr__(self, name):
+        if name in wrap_signals:
+            return self.__getattribute__(name)
+        print(self.currentWidget(), name)
+        return getattr(self.currentWidget(), name)
+    return __getattr__
 
 class WrapSignalsMeta(type(QObject), type):
     """ 
@@ -98,7 +107,11 @@ class WrapSignalsMeta(type(QObject), type):
                     signal_def = f"Signal({signal_args})"
                     attrs[signal_name] = eval(signal_def)
             if wrap_signals is None:
-                wrap_signals = [signal[0] for signal in signals]
+                if signals is None:
+                    wrap_signals = []
+                else:
+                    wrap_signals = [signal[0] for signal in signals]
             
         attrs["addWidget"] = override_addWidget(widget_class, wrap_signals, bases)
+        attrs["__getattr__"] = override_getattr(wrap_signals, bases)
         return type(clsname, bases, attrs)
