@@ -12,13 +12,23 @@ class TimerDialog(QDialog):
     
     def __init__(self, timeout=3000):
         super().__init__()
+        self._timeout = timeout
         self.timer = QTimer()
         self.timer.setInterval(timeout)
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self.accept)
+        
+    @property
+    def timeout(self):
+        """ Return current timeout (ms) """
+        return self._timeout
         
     def exec_(self, *args, **kwargs):
         """ Show the dialog and start the timer. """
         self.timer.start()
         super().exec_(*args, **kwargs)
         
+    def setTimeout(self, timeout):
+        """ Update `timeout` """
+        self._timeout = timeout
+        self.timer.setInterval(timeout)
