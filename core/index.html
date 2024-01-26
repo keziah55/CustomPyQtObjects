@@ -386,16 +386,7 @@ of the overriden <code>addWidget</code> method is <code>key, *args, **kwargs</co
 
             <details class="quote">
               <summary>Source code in <code>customQObjects/core/wrapsignalsmeta.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 81</span>
 <span class="normal"> 82</span>
 <span class="normal"> 83</span>
 <span class="normal"> 84</span>
@@ -418,7 +409,20 @@ of the overriden <code>addWidget</code> method is <code>key, *args, **kwargs</co
 <span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span>
-<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">WrapSignalsMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">QObject</span><span class="p">),</span> <span class="nb">type</span><span class="p">):</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">WrapSignalsMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">QObject</span><span class="p">),</span> <span class="nb">type</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">    Metaclass for any container widget (e.g. StackedWidget).</span>
 
@@ -447,9 +451,13 @@ of the overriden <code>addWidget</code> method is <code>key, *args, **kwargs</co
                     <span class="n">signal_def</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Signal(</span><span class="si">{</span><span class="n">signal_args</span><span class="si">}</span><span class="s2">)&quot;</span>
                     <span class="n">attrs</span><span class="p">[</span><span class="n">signal_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">signal_def</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">wrap_signals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">wrap_signals</span> <span class="o">=</span> <span class="p">[</span><span class="n">signal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">signals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">wrap_signals</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">wrap_signals</span> <span class="o">=</span> <span class="p">[</span><span class="n">signal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">]</span>
 
         <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;addWidget&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">override_addWidget</span><span class="p">(</span><span class="n">widget_class</span><span class="p">,</span> <span class="n">wrap_signals</span><span class="p">,</span> <span class="n">bases</span><span class="p">)</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;__getattr__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">override_getattr</span><span class="p">(</span><span class="n">wrap_signals</span><span class="p">,</span> <span class="n">bases</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">clsname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
