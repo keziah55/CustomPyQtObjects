@@ -27,6 +27,9 @@ class StackedWidget(QStackedWidget):
         else:
             raise KeyError(f"StackedWidget has no widget '{key}'")
             
+    def __contains__(self, key):
+        return key in self._widgetDict
+            
     @property
     def widgetDict(self) -> dict:
         """ Return dictionary of keys and widgets """
