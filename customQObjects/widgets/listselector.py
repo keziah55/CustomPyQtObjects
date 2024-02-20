@@ -9,8 +9,8 @@ class ListSelector(QWidget):
     """
     Widget showing a list of strings, with the current one highlighted.
     """
-    def __init__(self, values:list[str], orientation:str="vertical"):
-        super().__init__()
+    def __init__(self, *args, values:list[str], orientation:str="vertical", **kwargs):
+        super().__init__(*args, **kwargs)
         
         valid = ["vertical", "horizontal"]
         if orientation not in valid:
