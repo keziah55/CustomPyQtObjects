@@ -3,13 +3,51 @@
 """
 Simple widget to show a list of values and highlight the current one.
 """
-from qtpy.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame
+from qtpy.QtWidgets import QVBoxLayout, QHBoxLayout, QLabel, QFrame
+from qtpy.QtCore import Qt
 
-class ListSelector(QWidget):
+class StyledLabel(QLabel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        self._css_style = ""
+        self._plain_text = ""
+        
+    def set_css_style(self, style=None):
+        if style is None:
+            self._css_style = ""
+        else:
+            self._css_style = f' style="{style}"'
+        
+    def set_text(self, text):
+        self._plain_text = text
+        html = self._make_html()
+        super().setText(html)
+        
+    def setText(self, text):
+        return self.set_text(text)
+    
+    def text(self):
+        return self._plain_text
+        
+    def _make_html(self):
+        s = f'<p{self._css_style}>{self._plain_text}</p>'
+        return s
+
+class ListSelector(QFrame):
     """
     Widget showing a list of strings, with the current one highlighted.
+    
+    Parameters
+    ----------
+    values : list[str]
+        List of strings to show
+    orientation : {'vertical', 'horizontal'}
+        Orientation for list of widgets.
+    style : str, optional
+        Html style to use for each label.
     """
-    def __init__(self, *args, values:list[str], orientation:str="vertical", **kwargs):
+    def __init__(self, *args, values:list[str], orientation:str="vertical", style=None, **kwargs):
         super().__init__(*args, **kwargs)
         
         valid = ["vertical", "horizontal"]
@@ -20,20 +58,36 @@ class ListSelector(QWidget):
             
         self._current_idx = 0
         
-        self.labels = [QLabel(value) for value in values]
+        self.labels = []
         
         self.layout = QVBoxLayout() if orientation == "vertical" else QHBoxLayout()
         
-        for label in self.labels:
+        for value in values:
+            label = StyledLabel()
+            # if style is not None:
+            #     style_css = f' style="{style}"'
+            # else:
+            #     style_css = ""
+            # value = f'<p{style_css}>{value}</p>'
+            # label.setText(value)
+            
+            label.set_css_style(style)
+            label.set_text(value)
+            
             label.setFrameShape(QFrame.NoFrame)
+            label.setAlignment(Qt.AlignCenter)
             self.layout.addWidget(label)
+            self.labels.append(label)
         
         self.setLayout(self.layout)
+        
+        self.setFrameShape(QFrame.Box)
+        self.set_current_index(0)
         
     @property
     def current_index(self):
         """ Index of currently highlighted label. """
-        return self._current_index
+        return self._current_idx
     
     @current_index.setter
     def current_index(self, idx):
@@ -42,7 +96,7 @@ class ListSelector(QWidget):
     @property
     def current_text(self):
         """ Text of currently highlighted label. """
-        return self._labels[self._current_idx].text()
+        return self.labels[self._current_idx].text()
     
     @current_text.setter
     def current_text(self, text):
