@@ -64,13 +64,6 @@ class ListSelector(QFrame):
         
         for value in values:
             label = StyledLabel()
-            # if style is not None:
-            #     style_css = f' style="{style}"'
-            # else:
-            #     style_css = ""
-            # value = f'<p{style_css}>{value}</p>'
-            # label.setText(value)
-            
             label.set_css_style(style)
             label.set_text(value)
             
