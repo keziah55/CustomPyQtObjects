@@ -1,10 +1,14 @@
 site_name: Custom PyQt Objects
 
+theme: 
+  name:
+    material
+
 nav:
-    - Home: 'index.md'
-    - Widgets: 'widgets.md'
-    - Core: 'core.md'
-    - Gui: 'gui.md'
+  - Home: 'index.md'
+  - Widgets: 'widgets.md'
+  - Core: 'core.md'
+  - Gui: 'gui.md'
     
 plugins:
 - search
