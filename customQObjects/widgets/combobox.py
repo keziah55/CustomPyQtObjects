@@ -62,7 +62,7 @@ class ComboBox(QComboBox):
         If not provided, [value][customQObjects.widgets.combobox.ComboBox.value] will return the
         current text.
     model : QAbstractListModel, optional
-        Model to use. If not provided, a [ComboBoxModel][customQObjects.widgets.ComboBoxModel]
+        Model to use. If not provided, a s[ComboBoxModel][customQObjects.widgets.ComboBoxModel]
         is created that returns the 'name' and 'value' from the `values` list when asked for the
         [Qt.DisplayRole](https://doc.qt.io/qt-6/qt.html#ItemDataRole-enum) and
         [Qt.UserRole](https://doc.qt.io/qt-6/qt.html#ItemDataRole-enum) respectively
