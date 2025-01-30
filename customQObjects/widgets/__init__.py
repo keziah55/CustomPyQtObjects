@@ -1,6 +1,6 @@
 from .elidemixin import ElideMixin, ElideLabel
 from .simplemixins import ClickMixin
-from .combobox import ComboBox
+from .combobox import ComboBox, ComboBoxModel
 from .groupbox import GroupBox
 from .listselector import ListSelector
 from .timerdialog import TimerDialog
@@ -13,6 +13,7 @@ __all__ = [
     "TimerDialog",
     "GroupBox",
     "ComboBox",
+    "ComboBoxModel",
     "ElideMixin",
     "ElideLabel",
     "ClickMixin",
